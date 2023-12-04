@@ -1,0 +1,69 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="Welcome to Astro.">
+  <main class="min-h-screen container m-auto p-5">
+    <h1 class="font-bold text-5xl text-white">Hararios de esclavos</h1>
+    <p class="text-biloba-flower-500 mt-2 font-light">
+      El timezone del navegador esta en <span
+        class="font-bold"
+        id="timezonelocal"></span>
+    </p>
+    <ul id="team" class="bg-biloba-flower-800/30 p-3 rounded-md mt-5"></ul>
+  </main>
+</Layout>
+
+<script>
+  const team = [
+    {
+      name: "Kamerr Ezz",
+      timezone: "America/Cancun",
+    },
+    {
+      name: "Hakos",
+      timezone: "Europe/Madrid",
+    },
+    {
+      name: "Dei",
+      timezone: "America/Santiago",
+    },
+    {
+      name: "Thunder",
+      timezone: "America/Lima",
+    },
+    {
+      name: "Oscar",
+      timezone: "America/Costa_Rica",
+    },
+    {
+      name: "Jerry",
+      timezone: "America/Bogota",
+    },
+  ];
+
+  const timezonelocal = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  const timezonelocalSpan = document.getElementById("timezonelocal") as any;
+  const $team = document.getElementById("team") as any;
+  timezonelocalSpan.innerText = timezonelocal;
+
+  const ConvertTimeZone = (timezoneToConvert: string) => {
+    const horaEnDestino = new Date().toLocaleString("en-US", {
+      timeZone: timezoneToConvert,
+      hour12: false,
+    });
+
+    console.log(horaEnDestino);
+    return horaEnDestino.split(", ")[1];
+  };
+
+  let list = "";
+
+  team.map((r) => {
+    list += `<li class="text-white">${
+      r.name
+    }: <span class='font-bold'>${ConvertTimeZone(r.timezone)}</span></li>`;
+  });
+
+  $team.innerHTML = list;
+</script>
