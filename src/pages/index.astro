@@ -10,60 +10,70 @@ import Layout from "../layouts/Layout.astro";
         class="font-bold"
         id="timezonelocal"></span>
     </p>
-    <ul id="team" class="bg-biloba-flower-800/30 p-3 rounded-md mt-5"></ul>
+    <ul id="team" class="bg-biloba-flower-800/20 p-3 rounded-md mt-5"></ul>
   </main>
 </Layout>
 
 <script>
-  const team = [
-    {
-      name: "Kamerr Ezz",
-      timezone: "America/Cancun",
-    },
-    {
-      name: "Hakos",
-      timezone: "Europe/Madrid",
-    },
-    {
-      name: "Dei",
-      timezone: "America/Santiago",
-    },
-    {
-      name: "Thunder",
-      timezone: "America/Lima",
-    },
-    {
-      name: "Oscar",
-      timezone: "America/Costa_Rica",
-    },
-    {
-      name: "Jerry",
-      timezone: "America/Bogota",
-    },
-  ];
-
-  const timezonelocal = Intl.DateTimeFormat().resolvedOptions().timeZone;
-  const timezonelocalSpan = document.getElementById("timezonelocal") as any;
-  const $team = document.getElementById("team") as any;
-  timezonelocalSpan.innerText = timezonelocal;
-
-  const ConvertTimeZone = (timezoneToConvert: string) => {
-    const horaEnDestino = new Date().toLocaleString("en-US", {
-      timeZone: timezoneToConvert,
-      hour12: false,
-    });
-
-    console.log(horaEnDestino);
-    return horaEnDestino.split(", ")[1];
-  };
-
-  let list = "";
-
-  team.map((r) => {
-    list += `<li class="text-white">${
-      r.name
-    }: <span class='font-bold'>${ConvertTimeZone(r.timezone)}</span></li>`;
-  });
-
-  $team.innerHTML = list;
-</script>
+	const team = [
+	  {
+		name: "Kamerr Ezz",
+		timezone: "America/Cancun",
+	  },
+	  {
+		name: "Hakos",
+		timezone: "Europe/Madrid",
+	  },
+	  {
+		name: "Dei",
+		timezone: "America/Santiago",
+	  },
+	  {
+		name: "Thunder",
+		timezone: "America/Lima",
+	  },
+	  {
+		name: "Oscar",
+		timezone: "America/Costa_Rica",
+	  },
+	  {
+		name: "Jerry",
+		timezone: "America/Bogota",
+	  },
+	];
+  
+	const timezonelocalSpan = document.getElementById("timezonelocal") as any;
+	const $team = document.getElementById("team") as any;
+  
+	const updateTime = () => {
+	  const timezonelocal = Intl.DateTimeFormat().resolvedOptions().timeZone;
+	  timezonelocalSpan.innerText = timezonelocal;
+  
+	  let list = "";
+	  team.forEach((r) => {
+		list += `<li class="text-white my-3 p-1 rounded-md bg-biloba-flower-800/50">${
+		  r.name
+		}: <span class='font-bold px-2'>${ConvertTimeZone(r.timezone)}</span></li>`;
+	  });
+  
+	  $team.innerHTML = list;
+	};
+  
+	const ConvertTimeZone = (timezoneToConvert: string) => {
+	  const horaEnDestino = new Date().toLocaleString("en-US", {
+		timeZone: timezoneToConvert,
+		hour12: false,
+		hour: "numeric",
+		minute: "numeric",
+		second: "numeric",
+	  });
+  
+	  return horaEnDestino;
+	};
+  
+	// Actualizar la hora cada segundo (1000 milisegundos)
+	setInterval(updateTime, 1000);
+  
+	// Llamada inicial para mostrar la hora al cargar la página
+	updateTime();
+  </script>
